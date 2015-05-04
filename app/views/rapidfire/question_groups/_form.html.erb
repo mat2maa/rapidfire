@@ -14,6 +14,26 @@
     </div>
   <% end %>
 
-  <%= f.input :name, :autofocus => true, :placeholder => User.human_attribute_name(:name) %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.input_field :name,
+                        as: :string,
+                        placeholder: 'Name',
+                        class: 'span6',
+                        required: true %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <%= f.input_field :description,
+                        as: :text,
+                        :placeholder => 'Description',
+                        class: 'span12',
+                        rows: 6,
+                        required: true %>
+    </div>
+  </div>
+
   <%= f.button :submit, 'Submit', :class => 'btn-burgundy' %>
 <% end %>

@@ -4,6 +4,10 @@
 <hr/>
 
 <div class="survey-module">
+  <div class="survey-description">
+    <%= simple_format(@question_group.description) %>
+  </div>
+
   <%= minimal_form_for [@question_group, @answer_group_builder],
                        html: { class: 'form-horizontal' } do |f| %>
 
