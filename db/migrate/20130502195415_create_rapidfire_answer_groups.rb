@@ -3,6 +3,9 @@ class CreateRapidfireAnswerGroups < ActiveRecord::Migration
     create_table :rapidfire_answer_groups do |t|
       t.references :question_group
       t.references :user, polymorphic: true
+      t.string :first_name
+      t.string :last_name
+      t.string :email
 
       t.timestamps
     end

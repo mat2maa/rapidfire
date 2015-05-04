@@ -1,11 +1,15 @@
 <%= render partial: "rapidfire/answers/errors", locals: {answer: answer} %>
 
-<%= f.label :answer_text, answer.question.question_text %>
 <%= f.fields_for :answer_text do |af| %>
-  <%- answer.question.options.each do |option| %>
-    <%= af.label option do %>
-      <%= af.check_box nil, { id: nil, checked: checkbox_checked?(answer, option) }, option %>
-      <%= option %>
+  <div class="control-group">
+    <%= f.label :answer_text, "#{answer.question.validation_rules[:presence] == '1' ? '*' : ''}#{answer.question.question_text}", class: 'control-label' %>
+    <%- answer.question.options.each do |option| %>
+      <div class="controls">
+        <%= af.label option, class: 'checkbox' do %>
+          <%= af.check_box nil, {id: nil, checked: checkbox_checked?(answer, option)}, option %>
+          <%= option %>
+        <% end %>
+      </div>
     <% end %>
-  <% end %>
+  </div>
 <% end %>

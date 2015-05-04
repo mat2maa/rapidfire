@@ -1,15 +1,19 @@
-<h3><%= question_group.new_record? ? "New Group" : "Edit Group" %></h3>
+<h1>
+  <%= question_group.new_record? ? "New Survey" : "Edit Survey" %>
+</h1>
+<hr/>
 
-<%= form_for question_group do |f| %>
+<%= minimal_form_for question_group do |f| %>
   <%- if question_group.errors.any? %>
-    <ul>
-      <%- question_group.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+    <div class="alert alert-error">
+      <ul>
+        <%- question_group.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.submit %>
+  <%= f.input :name, :autofocus => true, :placeholder => User.human_attribute_name(:name) %>
+  <%= f.button :submit, 'Submit', :class => 'btn-burgundy' %>
 <% end %>

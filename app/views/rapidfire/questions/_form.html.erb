@@ -1,40 +1,88 @@
-<h3>Question</h3>
+<h1>Question</h1>
+<hr/>
 
-<%= form_for form, as: :question, url: url, method: method do |f| %>
-  <%- unless form.errors.empty? %>
-    <ul>
-      <%- form.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+<div class="survey-module">
+  <%= minimal_form_for form,
+                       as: :question,
+                       url: url,
+                       method: method,
+                       class: 'form-vertical' do |f| %>
+    <%- unless form.errors.empty? %>
+      <div class="alert alert-error">
+        <ul>
+          <%- form.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="span5">
+        <div class="form-inputs">
+          <div class="controls controls-row">
+            <%= f.input_field :type,
+                              as: :select,
+                              collection: ::Rapidfire::QuestionForm::QUESTION_TYPES,
+                              include_blank: false,
+                              id: 'question type',
+                              placeholder: "*#{User.human_attribute_name(:type)}",
+                              class: 'span5' %>
+            <br/>
+          </div>
+
+          <div class="controls controls-row">
+            <%= f.input_field :question_text,
+                              placeholder: "#{User.human_attribute_name(:question_text)}",
+                              class: 'span5' %>
+          </div>
+          <div class="controls controls-row">
+            <%= f.input_field :answer_options,
+                              as: :text,
+                              :placeholder => "#{User.human_attribute_name(:answer_options)}",
+                              class: 'span5',
+                              rows: 5 %>
+          </div>
+        </div>
+      </div>
+
+      <div class="span5">
+        <div class="control-group">
+          <div class="controls controls-row">
+            <label class="checkbox">
+              <%= f.check_box :answer_presence %> Mandatory field?
+            </label>
+          </div>
+        </div>
+
+        <div class="controls controls-row">
+          <%= f.input_field :answer_minimum_length,
+                            as: :integer,
+                            type: :number,
+                            placeholder: 'Min length',
+                            class: 'span2' %>
+          <%= f.input_field :answer_maximum_length,
+                            as: :integer,
+                            type: :number,
+                            placeholder: 'Max length',
+                            class: 'span2' %>
+        </div>
+
+        <div class="controls controls-row">
+          <%= f.input_field :answer_greater_than_or_equal_to,
+                            as: :integer,
+                            type: :number,
+                            placeholder: 'Is gteq',
+                            class: 'span2' %>
+          <%= f.input_field :answer_less_than_or_equal_to,
+                            as: :integer,
+                            type: :number,
+                            placeholder: 'Is lteq',
+                            class: 'span2' %>
+
+          <%= f.submit submit_text, class: 'btn btn-burgundy' %>
+        </div>
+      </div>
+    </div>
   <% end %>
-
-  <%= f.label :type %>
-  <%= f.select :type, ::Rapidfire::QuestionForm::QUESTION_TYPES, {}, id: "question_type" %>
-
-  <%= f.label :question_text %>
-  <%= f.text_field :question_text %>
-
-  <%= f.label :answer_options %>
-  <%= f.text_area :answer_options, rows: 5 %>
-
-  <h4>Other options</h4>
-  <hr/>
-
-  <%= f.label :answer_presence %>
-  <%= f.check_box :answer_presence %>
-
-  <%= f.label :answer_minimum_length %>
-  <%= f.text_field :answer_minimum_length %>
-
-  <%= f.label :answer_maximum_length %>
-  <%= f.text_field :answer_maximum_length %>
-
-  <%= f.label :answer_greater_than_or_equal_to %>
-  <%= f.text_field :answer_greater_than_or_equal_to %>
-
-  <%= f.label :answer_less_than_or_equal_to %>
-  <%= f.text_field :answer_less_than_or_equal_to %>
-
-  <%= f.submit submit_text %>
-<% end %>
+</div>

@@ -1,9 +1,13 @@
 <%= render partial: "rapidfire/answers/errors", locals: {answer: answer} %>
 
-<%= f.label :answer_text, answer.question.question_text %>
-<%- answer.question.options.each do |option| %>
-  <%= f.label "answer_text_#{option}", option do %>
-    <%= f.radio_button :answer_text, option %>
-    <%= option %>
+<div class="control-group">
+  <%= f.label :answer_text, "#{answer.question.validation_rules[:presence] == '1' ? '*' : ''}#{answer.question.question_text}", class: 'control-label' %>
+  <%- answer.question.options.each do |option| %>
+    <div class="controls">
+      <%= f.label "answer_text_#{option}", option, class: 'radio' do %>
+        <%= f.radio_button :answer_text, option %>
+        <%= option %>
+      <% end %>
+    </div>
   <% end %>
-<% end %>
+</div>

@@ -37,6 +37,9 @@ module Rapidfire
 
     def results
       @question_group = QuestionGroup.find(params[:id])
+      @questions = @question_group.questions
+      @answer_groups = @question_group.answers.uniq { |a| [a.answer_group.first_name, a.answer_group.last_name] }.map(&:answer_group).uniq
+
       @question_group_results =
         QuestionGroupResults.new(question_group: @question_group).extract
 

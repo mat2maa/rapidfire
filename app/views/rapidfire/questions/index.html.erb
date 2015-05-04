@@ -1,21 +1,36 @@
-<h2>
+<h1>
   Questions
-  <%= link_to "New Question", new_question_group_question_path(@question_group) %>
-</h2>
+  <%= link_to "New Question",
+              new_question_group_question_path(@question_group),
+              class: 'pull-right btn btn-burgundy' %>
+</h1>
 <hr/>
 
-<table>
-  <colgroup>
-    <col>
-    <col width="250">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>Question</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: "question", collection: @questions %>
-  </tbody>
-</table>
+<% if @questions.any? %>
+  <div class="survey-module">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Position</th>
+        <th>Question</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @questions.each do |question| %>
+        <tr id="question_<%= question.id %>">
+          <td>
+            <%= question.question_text %>
+          </td>
+          <td>
+            <%= link_to "Edit", [:edit, question.question_group, question], :class => 'btn btn-mini' %>
+            <%= link_to "Delete", [question.question_group, question], method: :delete, :class => 'btn btn-mini btn-burgundy' %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>There are not any questions yet. Please create one.</p>
+<% end %>

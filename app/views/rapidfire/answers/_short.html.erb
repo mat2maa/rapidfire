@@ -1,4 +1,12 @@
 <%= render partial: "rapidfire/answers/errors", locals: {answer: answer} %>
 
-<%= f.label :answer_text, answer.question.question_text %>
-<%= f.text_field :answer_text %>
+<div class="control-group">
+  <%= f.label :answer_text, "#{answer.question.validation_rules[:presence] == '1' ? '*' : ''}#{answer.question.question_text}", class: 'control-label' %>
+  <div class="controls">
+    <%= f.input_field :answer_text,
+                      as: :string,
+                      placeholder: answer.question.question_text,
+                      class: 'span6',
+                      required: answer.question.validation_rules[:presence] == '1' %>
+  </div>
+</div>

@@ -10,9 +10,16 @@ module Rapidfire
       @answer_group_builder = AnswerGroupBuilder.new(answer_group_params)
 
       if @answer_group_builder.save
+        flash[:notice] = "Thank you for completing the survey, #{params[:answer_group][:first_name]}, your answers have been saved."
         redirect_to question_groups_path
       else
-        render :new
+        if AnswerGroup.where(email: params[:answer_group][:email], first_name: params[:answer_group][:first_name], last_name: params[:answer_group][:last_name]).any?
+          flash[:notice] = 'Thanks, but you have already completed the survey.'
+          redirect_to question_groups_path
+        else
+          flash[:notice] = 'There was a problem submitting your answers, please try again.'
+          render :new
+        end
       end
     end
 

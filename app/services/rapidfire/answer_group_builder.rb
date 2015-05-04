@@ -1,6 +1,6 @@
 module Rapidfire
   class AnswerGroupBuilder < Rapidfire::BaseService
-    attr_accessor :user, :question_group, :questions, :answers, :params
+    attr_accessor :user, :question_group, :first_name, :last_name, :email, :questions, :answers, :params
 
     def initialize(params = {})
       super(params)
@@ -29,6 +29,9 @@ module Rapidfire
         end
       end
 
+      @answer_group.email = params[:email]
+      @answer_group.first_name = params[:first_name]
+      @answer_group.last_name = params[:last_name]
       @answer_group.save!(options)
     end
 
@@ -43,8 +46,9 @@ module Rapidfire
     end
 
     private
+
     def build_answer_group
-      @answer_group = AnswerGroup.new(user: user, question_group: question_group)
+      @answer_group = AnswerGroup.new(user: user, question_group: question_group, first_name: first_name, last_name: last_name, email: email)
       @answers = @question_group.questions.collect do |question|
         @answer_group.answers.build(question_id: question.id)
       end

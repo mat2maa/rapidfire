@@ -1,23 +1,44 @@
-<h2>
-  Question Groups
+<h1>
+  Surveys
   <% if can_administer? %>
-    <%= link_to "New Group", new_question_group_path %>
+    <%= link_to "New Survey",
+                new_question_group_path,
+                class: 'pull-right btn btn-burgundy' %>
   <% end %>
-</h2>
+</h1>
 <hr/>
 
-<table>
-  <colgroup>
-    <col>
-    <col width="250">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>Question Group</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: "question_group", collection: @question_groups %>
-  </tbody>
-</table>
+<% if @question_groups.any? %>
+  <div class="survey-module">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @question_groups.each do |question_group| %>
+        <tr>
+          <td>
+            <% if can_administer? %>
+              <%= link_to question_group.name, question_group_questions_path(question_group) %>
+            <% else %>
+              <%= question_group.name %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to "Answer Questions", new_question_group_answer_group_path(question_group), :class => 'btn btn-mini' %>
+            <% if can_administer? %>
+              <%= link_to "Results", [:results, question_group], :class => 'btn btn-mini' %>
+              <%= link_to "Delete", [question_group], method: :delete, :class => 'btn btn-mini btn-burgundy' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>There are not any surveys yet. Please create one.</p>
+<% end %>

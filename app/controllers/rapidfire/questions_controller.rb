@@ -61,6 +61,14 @@ module Rapidfire
       end
     end
 
+    def sort
+      params[:question].each_with_index do |id, index|
+        question = Question.find(id)
+        question.update_attribute(:position, index+1) if question
+      end
+      render nothing: true
+    end
+
     private
 
     def find_question_group!

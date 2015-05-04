@@ -1,32 +1,80 @@
 <h1>Results</h1>
+<hr/>
 
-<%- @question_group_results.each do |result| %>
-  <div>
-    <h4><%= result.question.question_text %></h4>
-    <p>
-      <%- if result.results.is_a?(Array) %>
-        <ol>
-          <%- result.results.each do |answer| %>
-            <li><%= answer %></li>
-          <% end %>
-        </ol>
-      <% elsif result.results.is_a?(Hash) %>
-        <table>
-          <thead>
-            <tr>
-              <th>Option</th>
-              <th>Count</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%- result.results.each do |option, count| %>
-              <tr>
-                <td><%= option %></td>
-                <td><%= count %></td>
-              </tr>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <%= link_to "Summary", "#summary", "data-toggle" => "tab" %>
+  </li>
+  <% @answer_groups.each do |result| %>
+    <li>
+      <%= link_to "#{result.first_name} #{result.last_name}", "#result_#{result.id}", "data-toggle" => "tab" %>
+    </li>
+  <% end %>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="summary">
+    <div class="survey-module">
+      <% @question_group_results.each do |result| %>
+        <div>
+          <h4>
+            Question:
+            <%= result.question.question_text %>
+          </h4>
+
+          <div>
+            <% if result.results.is_a?(Array) %>
+              <ol>
+                <% result.results.each do |answer| %>
+                  <li>
+                    <%= answer %>
+                  </li>
+                <% end %>
+              </ol>
+            <% elsif result.results.is_a?(Hash) %>
+              <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                  <th>Option</th>
+                  <th>Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% result.results.each do |option, count| %>
+                  <tr>
+                    <td>
+                      <%= option %>
+                    </td>
+                    <td>
+                      <%= count %>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
             <% end %>
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <% if result != @question_group_results.last %>
+          <hr/>
+        <% end %>
       <% end %>
+    </div>
   </div>
-<% end %>
+  <% @answer_groups.each do |result| %>
+    <div class="tab-pane" id="<%= "result_#{result.id}" %>">
+      <div class="survey-module">
+        <% @questions.each do |question| %>
+          <div>
+            <h4>
+              Question:
+              <%= question.question_text %>
+            </h4>
+            <div>
+              <%= result.answers.where(question_id: question.id).first.answer_text %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

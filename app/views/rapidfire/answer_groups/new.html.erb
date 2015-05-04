@@ -1,11 +1,60 @@
-<h2>Please answer these Questions</h2>
+<h1>
+  <%= @question_group.name %>
+</h1>
 <hr/>
 
-<%= form_for([@question_group, @answer_group_builder]) do |f| %>
-  <%- @answer_group_builder.answers.each do |answer| %>
-    <%= f.fields_for("#{answer.question.id}", answer) do |answer_form| %>
-      <%= render_answer_form_helper(answer, answer_form) %>
-    <% end %>
+<div class="survey-module">
+  <%= minimal_form_for [@question_group, @answer_group_builder],
+                       html: { class: 'form-horizontal' } do |f| %>
+
+    <div class="form-inputs">
+      <div class="control-group">
+        <%= f.label :email, class: 'control-label' %>
+        <div class="controls">
+          <%= f.input_field :email,
+                            as: :email,
+                            placeholder: 'Email',
+                            class: 'span6',
+                            value: current_user.present? ? current_user.email : '',
+                            required: true %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :first_name, class: 'control-label' %>
+        <div class="controls">
+          <%= f.input_field :first_name,
+                            placeholder: 'First Name',
+                            class: 'span6',
+                            value: current_user.present? ? current_user.user_profile.first_name : '',
+                            required: true %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :last_name, class: 'control-label' %>
+        <div class="controls">
+          <%= f.input_field :last_name,
+                            placeholder: 'Last Name',
+                            class: 'span6',
+                            value: current_user.present? ? current_user.user_profile.last_name : '',
+                            required: true %>
+        </div>
+      </div>
+
+      <%- @answer_group_builder.answers.each do |answer| %>
+        <%= f.fields_for("#{answer.question.id}", answer) do |answer_form| %>
+          <%= render_answer_form_helper(answer, answer_form) %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="control-group">
+      <div class="controls">
+        <p>*Mandatory fields are marked with an asterisk</p>
+        <br/>
+        <%= f.submit 'Submit', class: 'btn btn-burgundy' %>
+      </div>
+    </div>
   <% end %>
-  <%= f.submit "Save" %>
-<% end %>
+</div>
